@@ -1,12 +1,14 @@
 package isayen.lets_play.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isayen.lets_play.users.UserDTO;
+import isayen.lets_play.users.UserReqDTO;
+import isayen.lets_play.users.UserRespDTO;
 import isayen.lets_play.utils.ApiResponse;
 import jakarta.validation.Valid;
 
@@ -22,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping ("/register")
-    public ApiResponse<UserDTO> register(@Valid @RequestBody UserDTO userDTO) {  
+    public ResponseEntity<ApiResponse<UserRespDTO>> register(@Valid @RequestBody UserReqDTO userDTO) {  
         return authService.registerUser(userDTO);
     }
     
