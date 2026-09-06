@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import isayen.lets_play.users.UserReqDTO;
 import isayen.lets_play.users.UserRespDTO;
 import isayen.lets_play.utils.ApiResponse;
 import jakarta.validation.Valid;
@@ -19,12 +18,12 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping ("/login")
-    public String login() {
-        return "Login endpoint";
+    public ResponseEntity<ApiResponse<UserRespDTO>> login(@Valid @RequestBody LoginDTO req) {
+        return authService.loginUser(req);
     }
 
     @PostMapping ("/register")
-    public ResponseEntity<ApiResponse<UserRespDTO>> register(@Valid @RequestBody UserReqDTO userDTO) {  
+    public ResponseEntity<ApiResponse<UserRespDTO>> register(@Valid @RequestBody RegisterDTO userDTO) {  
         return authService.registerUser(userDTO);
     }
     

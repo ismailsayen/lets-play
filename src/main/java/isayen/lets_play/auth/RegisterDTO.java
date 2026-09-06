@@ -1,10 +1,10 @@
-package isayen.lets_play.users;
+package isayen.lets_play.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record UserReqDTO(
+public record RegisterDTO(
     @NotBlank (message = "The username is required.")
     @Size (min = 3, max = 20, message = "The username must contain between 3 and 20 characters.")
     String username, 

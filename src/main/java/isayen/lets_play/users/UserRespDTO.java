@@ -8,5 +8,6 @@ public record UserRespDTO(
      String username,
      String email,
      String role,
-     String createdAt
+     String createdAt,
+     String Token
 ){}
