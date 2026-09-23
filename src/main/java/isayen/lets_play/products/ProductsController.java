@@ -1,6 +1,9 @@
 package isayen.lets_play.products;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import isayen.lets_play.utils.ApiResponse;
 import jakarta.validation.Valid;
 
 @RequestMapping ("/products")
@@ -20,32 +24,25 @@ public class ProductsController {
     @Autowired 
     private ProductsService prdtServ;
     
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<Product>>> getAllProducts() {
+        return prdtServ.getAllProducts();
+    }
+
+
     @PostMapping
-    public String createProduct(@Valid @RequestBody ProductDTO product,@AuthenticationPrincipal UserDetails auth) {
-        System.out.println(product.name());
-        System.out.println(product.price());
-        
+    public ResponseEntity<ApiResponse<Product>> createProduct(@Valid @RequestBody ProductDTO product, @AuthenticationPrincipal UserDetails auth) {
         return prdtServ.saveProduct(product,auth);
     }
 
-    @GetMapping
-    public String getAllProducts() {
-        return "List of products";
-    }
-    
-    @GetMapping("/{id}")
-    public String getProductById(@PathVariable String id) {
-        return "Get product by ID endpoint";
-    }
-
     @PutMapping("/{id}")
-    public String updateProduct(@PathVariable String id) {
-        return "Update product by ID endpoint"; 
+    public ResponseEntity<String> updateProduct(@Valid @RequestBody ProductDTO product, @AuthenticationPrincipal UserDetails auth, @PathVariable String id) {
+        return prdtServ.updatePrdt(auth,product, id); 
     }
 
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable String id) {
-        return "Delete product by ID endpoint";
+    public ResponseEntity<String> deleteProduct( @AuthenticationPrincipal UserDetails auth, @PathVariable String id) {
+        return prdtServ.DeletePrdt(auth, id);
     }
 }

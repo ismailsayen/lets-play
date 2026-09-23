@@ -30,12 +30,17 @@ public class UserEntity implements UserDetails {
     private String role;
     private String createdAt;
 
+    public String getId(){return id;}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
     }
+
+    public String getEmail() { return email; }
+
     @Override
-    public String getUsername() { return email; }
+    public String getUsername() { return username; }
     @Override
     public boolean isAccountNonExpired() { return true; }
     @Override
