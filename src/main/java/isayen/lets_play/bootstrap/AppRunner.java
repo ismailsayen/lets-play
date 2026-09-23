@@ -12,12 +12,12 @@ import isayen.lets_play.utils.FormatDate;
 
 @Component
 public class AppRunner implements ApplicationRunner {
-    @Value("${admineName}")
-    private String admineName;
-    @Value("${adminePass}")
-    private String adminePass;
-    @Value("${admineEmail}")
-    private String admineEmail;
+    @Value("${adminName}")
+    private String adminName;
+    @Value("${adminPass}")
+    private String adminPass;
+    @Value("${adminEmail}")
+    private String adminEmail;
 
     private final UserRepository userRepo;
     private final BCryptPasswordEncoder encoder;
@@ -30,16 +30,16 @@ public class AppRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        if (userRepo.existsByUsername(admineName) && userRepo.existsByEmail(admineEmail)) {
+        if (userRepo.existsByUsername(adminName) && userRepo.existsByEmail(adminEmail)) {
             System.out.println("Admin Already exist!");
             
             return;
         }
-        String cryptedPassword=  encoder.encode(adminePass);
+        String cryptedPassword=  encoder.encode(adminPass);
 
         UserEntity admin = UserEntity.builder()
-                .username(admineName)
-                .email(admineEmail)
+                .username(adminName)
+                .email(adminEmail)
                 .password(cryptedPassword)
                 .createdAt(FormatDate.CurrentDateToString())
                 .role("ADMIN")

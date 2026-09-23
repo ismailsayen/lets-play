@@ -50,6 +50,7 @@ public class AuthService {
                         .createdAt(formattedString)
                         .build();
 
+        userRepository.save(user);
         UserRespDTO userInfo = UserRespDTO.builder()
         .id(user.getId())
         .username(user.getUsername())
