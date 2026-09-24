@@ -17,6 +17,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import io.jsonwebtoken.security.SignatureException;
 import isayen.lets_play.exception.DuplicateResourceException;
@@ -51,8 +52,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ProblemDetail> ElementNotFound(NoSuchElementException ex) {
+    @ExceptionHandler({NoSuchElementException.class, NoResourceFoundException.class})
+    public ResponseEntity<ProblemDetail> ElementNotFound(Exception ex) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pd);
     }
