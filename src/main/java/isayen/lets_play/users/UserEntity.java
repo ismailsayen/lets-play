@@ -34,7 +34,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        return List.of(new SimpleGrantedAuthority(String.format("ROLE_%s", role)));
     }
 
     public String getEmail() { return email; }

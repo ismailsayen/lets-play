@@ -10,19 +10,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import isayen.lets_play.auth.RegisterDTO;
 import isayen.lets_play.exception.ForbiddenException;
+import isayen.lets_play.products.ProductsRepository;
 import isayen.lets_play.utils.ApiResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
-    private final UserRepository userRepo;
-    private final BCryptPasswordEncoder encoder;
 
+    private final UserRepository userRepo;
+    private final ProductsRepository prdtRepo;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = userRepo.findByEmail(email).orElseThrow(
@@ -78,6 +78,7 @@ public class UserService implements UserDetailsService {
         return ResponseEntity.status(HttpStatus.OK).body(String.format("User %s is updtaed", id));
     }
 
+    @Transactional 
     public ResponseEntity<String> deleteUser(UserDetails auth, String id) {
         UserEntity user = (UserEntity) auth;
         if (id.equals(user.getId())) {
@@ -87,9 +88,12 @@ public class UserService implements UserDetailsService {
         UserEntity userEnt = userRepo.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User Not Found"));
 
+        prdtRepo.deleteByUserId(id);
+
         userRepo.delete(userEnt);
 
-        return ResponseEntity.status(HttpStatus.OK).body(String.format("User %s is Deleted", id));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(String.format("User %s and all their products are deleted", id));
     }
 
 }

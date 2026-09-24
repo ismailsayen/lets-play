@@ -34,3 +34,5 @@ build/
 
 
 .env
+.github
+keystore.p12

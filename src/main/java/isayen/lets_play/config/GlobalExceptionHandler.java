@@ -87,5 +87,4 @@ public class GlobalExceptionHandler {
     //     ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     // }
-    
 }

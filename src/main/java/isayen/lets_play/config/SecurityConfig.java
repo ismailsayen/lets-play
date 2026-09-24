@@ -31,16 +31,18 @@ public class SecurityConfig {
 			.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET ,"/products/**").permitAll()
-                .requestMatchers("/users/**").hasAuthority("ADMIN")
+                .requestMatchers("/users/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-            ;
-
-
+            .exceptionHandling(exception->exception
+                .authenticationEntryPoint((req,resp,authException)->{
+                    resp.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED,"Unauthorized: Authentication token is missing or invalid.");
+                })
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
